@@ -1,0 +1,10 @@
+Package: myrpackage
+Type: Package
+Title: My R Package
+Version: 0.1.0
+Author: Your Name
+Maintainer: Your Name <your.email@example.com>
+Description: A simple R package that provides a greeting function.
+License: MIT
+Imports:
+    testthat (>= 3.0.0)
