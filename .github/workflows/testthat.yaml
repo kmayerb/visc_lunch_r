@@ -1,17 +1,26 @@
-name: Run testthat unit tests
+name: testthat
 
 on: [push, pull_request]
 
 jobs:
-  testthat:
+  tests:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
-      - name: Install dependencies
-        run: |
-          Rscript -e "install.packages(c('devtools', 'testthat'))"
-          Rscript -e "devtools::install_deps(dependencies = TRUE)"
+      - uses: actions/checkout@v4
+
+      # Fast R setup + binary packages from RSPM
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # Install deps with pak + cache them automatically
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache: true
+          # Ensure testthat is available even if only in Suggests
+          extra-packages: any::testthat
+
+      # Run tests (for a package repo)
       - name: Run testthat tests
-        run: Rscript -e "testthat::test_dir('tests/testthat')"
+        run: Rscript -e 'testthat::test_local(reporter = testthat::ProgressReporter$new())'
