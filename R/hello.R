@@ -2,3 +2,7 @@
 hello <- function() {
   return("Hello, world!")
 }
+
+hola <- function() {
+  return("Hola, world!")
+}
